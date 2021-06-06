@@ -20,8 +20,10 @@ HWND  SG_InputBox::m_hWndEdit = NULL;
 HWND  SG_InputBox::m_hWndOK = NULL;
 HWND  SG_InputBox::m_hWndCancel = NULL;
 HWND  SG_InputBox::m_hWndPrompt = NULL;
-wchar_t SG_InputBox::m_String[320];
+char SG_InputBox::m_String[320];
 HBRUSH SG_InputBox::hbrBkgnd =  NULL;
+
+DWORD ExtraStyles = 0;
 
 #define SOFT_BLUE RGB(206,214,240)
 LRESULT CALLBACK SG_InputBox::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -61,8 +63,8 @@ LRESULT CALLBACK SG_InputBox::WndProc(HWND hWnd, UINT message, WPARAM wParam, LP
 
 		// The TextEdit Control - For the text to be input
 		m_hWndEdit = CreateWindowEx(WS_EX_STATICEDGE,
-			TEXTEDIT_CLASS, L"",
-			WS_VISIBLE | WS_CHILD | WS_TABSTOP | ES_AUTOHSCROLL,
+			_T(TEXTEDIT_CLASS), _T(""),
+			WS_VISIBLE | WS_CHILD | WS_TABSTOP | ES_AUTOHSCROLL | ExtraStyles,
 			5, TOP_EDGE + BUTTON_HEIGHT * 2+30, INPUTBOX_WIDTH - 30, TEXTEDIT_HEIGHT,
 			hWnd,
 			NULL,
@@ -79,7 +81,7 @@ LRESULT CALLBACK SG_InputBox::WndProc(HWND hWnd, UINT message, WPARAM wParam, LP
 
 		// The Confirm button
 		m_hWndOK = CreateWindowEx(WS_EX_STATICEDGE,
-			PUSH_BUTTON, L"Confirm",
+			PUSH_BUTTON, _T("Confirm"),
 			WS_VISIBLE | WS_CHILD | WS_TABSTOP,
 			INPUTBOX_WIDTH - BUTTON_WIDTH - 30, TOP_EDGE, BUTTON_WIDTH, BUTTON_HEIGHT,
 			hWnd,
@@ -96,7 +98,7 @@ LRESULT CALLBACK SG_InputBox::WndProc(HWND hWnd, UINT message, WPARAM wParam, LP
 
 		// The Cancel button
 		m_hWndCancel = CreateWindowEx(WS_EX_STATICEDGE,
-			PUSH_BUTTON, L"Cancel",
+			PUSH_BUTTON, _T("Cancel"),
 			WS_VISIBLE | WS_CHILD | WS_TABSTOP,
 			INPUTBOX_WIDTH - BUTTON_WIDTH - 30, TOP_EDGE + BUTTON_HEIGHT + 15, BUTTON_WIDTH, BUTTON_HEIGHT,
 			hWnd,
@@ -115,7 +117,7 @@ LRESULT CALLBACK SG_InputBox::WndProc(HWND hWnd, UINT message, WPARAM wParam, LP
 
 		// The SG_InputBox Caption Static text
 		m_hWndPrompt = CreateWindowEx(WS_EX_STATICEDGE,
-			L"static", L"",
+			_T("static"), _T(""),
 			WS_VISIBLE | WS_CHILD,
 			5, TOP_EDGE, INPUTBOX_WIDTH - BUTTON_WIDTH - 50, BUTTON_HEIGHT * 2 + TOP_EDGE,
 			hWnd,
@@ -165,7 +167,7 @@ LRESULT CALLBACK SG_InputBox::WndProc(HWND hWnd, UINT message, WPARAM wParam, LP
 }
 
 
-LPWSTR SG_InputBox::GetString(LPCTSTR szCaption, LPCTSTR szPrompt, LPCTSTR szDefaultText)
+LPCTSTR SG_InputBox::GetString(LPCTSTR szCaption, LPCTSTR szPrompt, LPCTSTR szDefaultText)
 {
 	RECT r;
 	HWND hWnd = GetDesktopWindow();
@@ -278,3 +280,10 @@ LPWSTR SG_InputBox::GetString(LPCTSTR szCaption, LPCTSTR szPrompt, LPCTSTR szDef
 	return m_String;
 }
 
+
+LPCTSTR SG_InputBox::GetPasswordString(LPCTSTR szCaption, LPCTSTR szPrompt, LPCTSTR szDefaultText)
+{
+	ExtraStyles = ES_PASSWORD;
+
+	return GetString(szCaption,szPrompt,szDefaultText);
+}

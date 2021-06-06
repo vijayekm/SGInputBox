@@ -10,9 +10,11 @@ June 2019
 
 #pragma once
 #include <Windows.h>
+#include <tchar.h>
 
 class SG_InputBox
 {
 public:
-	static LPWSTR GetString(LPCTSTR szCaption, LPCTSTR szPrompt, LPCTSTR szDefaultText = L"");
+	static LPCTSTR GetString(LPCTSTR szCaption, LPCTSTR szPrompt, LPCTSTR szDefaultText =_T(""));
+	static LPCTSTR GetPasswordString(LPCTSTR szCaption, LPCTSTR szPrompt, LPCTSTR szDefaultText = _T(""));
 };

@@ -13,9 +13,10 @@ June 2019
 #include "SG_InputBoxLib.h"
 int main()
 {
-    wprintf(L"Testing the InputBox static lib\n"); 
-	LPWSTR result = SG_InputBox::GetString(L"Code Project Demo - by Michael Haephrati", L"What is your name",L"My name is Michael");
-	wprintf(L"User entered '%s'\n", result);
+    printf("Testing the InputBox static lib\n"); 
+	LPCTSTR result = SG_InputBox::GetPasswordString(_T("Code Project Demo - by Michael Haephrati"),
+		_T("What is your name"),_T("My name is Michael") );
+	printf("User entered '%s'\n", result);
 	
 }
 
